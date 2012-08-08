@@ -6,7 +6,8 @@ body {
 
 }
 a {text-decoration:none; color:#FF5E99;}
-
+#head-little-bar { background-color:#109109; height:10px; width:100%;}
+#container {max-width:767px; margin: 0 auto;}
 
 /* ============================= */
 /* ! Layout for mobile version   */
