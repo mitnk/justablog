@@ -34,7 +34,7 @@ def get_aritle(number):
     return render_template('article.html', article=article, content=pygments_markdown(article.content))
 
 
-@views.route('/article/add/', methods=["POST", "GET"])
+@views.route('/add/', methods=["POST", "GET"])
 @requires_auth
 def add_article():
     """Add a article."""
