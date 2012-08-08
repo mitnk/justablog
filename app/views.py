@@ -7,7 +7,7 @@ application.
 from flask import Module, url_for, render_template, request, redirect
 from models import Article
 from forms import ArticleForm
-from utils import requires_auth, pygments_markdown
+from utils import requires_auth, pygments_markdown, get_aritle_by_number
 
 views = Module(__name__, 'views')
 
@@ -23,13 +23,8 @@ def index():
 @views.route(r'/a/<number>/')
 def get_aritle(number):
     """Render website's index page."""
-    articles = Article.all()
-    articles = articles.filter('number <=', int(number))
-    articles = articles.filter('number >=', int(number))
-    if articles.count() == 0:
-        return render_template('404.html'), 404
-    article = articles[0]
-    if not article.is_public:
+    article = get_aritle_by_number(number)
+    if article is None or not article.is_public:
         return render_template('404.html'), 404
     return render_template('article.html', article=article, content=pygments_markdown(article.content))
 
@@ -55,8 +50,42 @@ def add_article():
                 is_public=form.is_public.data,
             )
             article.save()
-            return redirect(url_for('index'))
-    return render_template('add_article.html', form=form)
+            return redirect(url_for('get_aritle', number=number))
+    action_url = url_for('add_article')
+    return render_template('add_article.html', form=form, action_url=action_url)
+
+
+@views.route('/edit/<int:number>/', methods=["POST", "GET"])
+@requires_auth
+def edit_article(number):
+    """Add a article."""
+    article = get_aritle_by_number(number)
+    if article is None:
+        return render_template('404.html'), 404
+
+    form = ArticleForm(
+        title=article.title,
+        content=article.content,
+        is_public=article.is_public,
+    )
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            article.title = form.title.data
+            article.content = form.content.data
+            article.is_public = form.is_public.data
+            article.tags = form.tags.data
+            article.save()
+            return redirect(url_for('edit_list'))
+    action_url = url_for('edit_article', number=number)
+    return render_template('add_article.html', form=form, action_url=action_url)
+
+
+@views.route('/edit/')
+@requires_auth
+def edit_list():
+    """Render website's index page."""
+    articles = Article.all().order('-added')
+    return render_template('edit_list.html', articles=articles)
 
 
 @views.after_request

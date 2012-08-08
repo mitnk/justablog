@@ -1,13 +1,19 @@
+/* CSS Resets */
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,q,small,strong,sub,sup,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0;margin:0;padding:0}article,aside,figure,figure img,figcaption,hgroup,footer,header,nav,section,video,object{display:block}a img{border:0}figure{position:relative}figure img{width:100%}
+
 /* ============================== */
 /* ! Layout for desktop version   */
 /* ============================== */
 
-body {
-
-}
-a {text-decoration:none; color:#FF5E99;}
+body { }
+a {text-decoration:none; color:darkgreen;}
+h1 { padding-bottom:8px; margin-bottom:20px; font-size:32px; border-bottom:1px solid lightBlue; }
+h2 { margin-bottom:9px; font-size:18px; }
 #head-little-bar { background-color:#109109; height:10px; width:100%;}
 #container {max-width:767px; margin: 0 auto;}
+#main { margin:40px; line-height: 24px;}
+.entry-content {font-size:17px;}
 
 /* ============================= */
 /* ! Layout for mobile version   */

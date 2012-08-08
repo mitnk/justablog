@@ -4,27 +4,23 @@
 
 {% block css %}
 <style>
-h1{ font-size:20px; }
-div.center{ width:800px; margin:20px auto; font-size:16px; line-height: 24px;}
 .errors { color:red; }
-p { margin: 10px 10px 20px 0; }
-#title, #tags { width:800px; height:1.5em; }
-textarea {height: 200px; width: 800px; }
+h1{ font-size:20px; }
+#title, #tags { width:100%; height:1.5em; }
+textarea {height: 200px; width: 100%; }
 </style>
 {% endblock %}
 
 {% block main %}
-<div class="center">
   <h1>Add New Article</h1>
-  <hr>
+
 {% from "_form_helpers.html" import render_field %}
-  <form action="{{ url_for('add_article') }}" method="post">
+  <form action="{{ action_url }}" method="post">
       <p>{{ form.hidden_tag() }}</p>
-      <p>{{ render_field(form.title) }}</p>
+      <p>{{ render_field(form.title, placeholder="标题") }}</p>
       <p>{{ render_field(form.content) }}</p>
       <p>{{ render_field(form.tags, placeholder="多个tag请用空格分隔") }}</p>
       <p>{{ render_field(form.is_public) }}</p>
       <p class="submit">{{ form.submit }}</p>
   </form>
-</div>
 {% endblock %}

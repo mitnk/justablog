@@ -4,6 +4,7 @@ import settings
 from flask import Response, request
 from functools import wraps
 from libs.BeautifulSoup import BeautifulSoup
+from models import Article
 from pygments import lexers, formatters, highlight
 
 def check_auth(username, password):
@@ -55,3 +56,11 @@ def pygments_markdown(content):
             pre.replaceWith(div_code)
     return unicode(soup)
 
+
+def get_aritle_by_number(number):
+    articles = Article.all()
+    articles = articles.filter('number <=', int(number))
+    articles = articles.filter('number >=', int(number))
+    if articles.count() == 0:
+    	return None
+    return articles[0]
