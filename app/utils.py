@@ -7,11 +7,14 @@ from libs.BeautifulSoup import BeautifulSoup
 from models import Article
 from pygments import lexers, formatters, highlight
 
+
 def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == settings.USER and password == settings.PASSWORD
+    if username == settings.USER and password == settings.PASSWORD:
+        return True
+    return False
 
 
 def authenticate():
@@ -64,3 +67,10 @@ def get_aritle_by_number(number):
     if articles.count() == 0:
     	return None
     return articles[0]
+
+
+def link_tags(tags):
+    result = ""
+    for tag in tags.split(" "):
+        result += '<a href="/tag/%s/">%s</a> ' % (tag, tag)
+    return result

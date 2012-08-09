@@ -3,7 +3,7 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/css/pygments.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/css/pygments.css" type="text/css" />
 {% endblock %}
 
 {% block main %}
@@ -13,5 +13,12 @@
     <div class="entry-content">
     {{ content|safe }}
     </div>
+
+{% if article.tags %}
+    <div class="entry-meta">
+    Tags: {{ tags|safe }}
+    </div>
+{% endif %}
+
 </div>
 {% endblock %}

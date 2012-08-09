@@ -14,4 +14,10 @@ class Article(db.Model):
     is_public = db.BooleanProperty()
 
     def get_absolute_url(self):
-        return "/a/%s/" % self.number
+        if self.is_public:
+            return "/a/%s/" % self.number
+        else:
+            return "/p/%s/" % self.number
+
+    def get_edit_url(self):
+        return "/edit/%s/" % self.number

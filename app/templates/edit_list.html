@@ -13,7 +13,7 @@ a.article {color:#333333;}
 {% for article in articles %}
     <p>({% if not article.is_public %}Private{% else %}{{ article.number }}{% endif %})
     <a class="article" href="{{ article.get_absolute_url() }}">{{ article.title|title }}</a>
-    <a href="{{ url_for('edit_list') }}{{ article.number }}/">Edit</a></p>
+    <a href="{{ article.get_edit_url() }}">Edit</a></p>
 {% endfor %}
 
 {% endblock %}

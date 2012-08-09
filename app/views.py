@@ -7,7 +7,8 @@ application.
 from flask import Module, url_for, render_template, request, redirect
 from models import Article
 from forms import ArticleForm
-from utils import requires_auth, pygments_markdown, get_aritle_by_number
+from utils import requires_auth, pygments_markdown, get_aritle_by_number, \
+    link_tags
 
 views = Module(__name__, 'views')
 
@@ -26,7 +27,30 @@ def get_aritle(number):
     article = get_aritle_by_number(number)
     if article is None or not article.is_public:
         return render_template('404.html'), 404
+    return render_template(
+        'article.html',
+        article=article,
+        content=pygments_markdown(article.content),
+        tags=link_tags(article.tags),
+    )
+
+
+@views.route(r'/p/<number>/')
+@requires_auth
+def get_private_aritle(number):
+    """Render website's index page."""
+    article = get_aritle_by_number(number)
+    if article is None:
+        return render_template('404.html'), 404
     return render_template('article.html', article=article, content=pygments_markdown(article.content))
+
+
+@views.route(r'/tag/<tag>/')
+def tag_articles(tag):
+    articles = Article.all().order('-added')
+    articles = [x for x in articles if x.is_public]
+    articles = [x for x in articles if tag in x.tags.split(' ')]
+    return render_template('index.html', articles=articles)
 
 
 @views.route('/add/', methods=["POST", "GET"])
@@ -50,7 +74,7 @@ def add_article():
                 is_public=form.is_public.data,
             )
             article.save()
-            return redirect(url_for('get_aritle', number=number))
+            return redirect(article.get_absolute_url())
     action_url = url_for('add_article')
     return render_template('add_article.html', form=form, action_url=action_url)
 
@@ -67,6 +91,7 @@ def edit_article(number):
         title=article.title,
         content=article.content,
         is_public=article.is_public,
+        tags=article.tags,
     )
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -75,7 +100,7 @@ def edit_article(number):
             article.is_public = form.is_public.data
             article.tags = form.tags.data
             article.save()
-            return redirect(url_for('edit_list'))
+            return redirect(article.get_absolute_url())
     action_url = url_for('edit_article', number=number)
     return render_template('add_article.html', form=form, action_url=action_url)
 
