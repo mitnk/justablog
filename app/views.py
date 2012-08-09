@@ -87,6 +87,12 @@ def edit_list():
     articles = Article.all().order('-added')
     return render_template('edit_list.html', articles=articles)
 
+@views.route('/md/')
+def markdown_syntax():
+    """Render website's index page."""
+    return render_template('markdown.html')
+
+
 
 @views.after_request
 def add_header(response):
