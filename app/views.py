@@ -21,6 +21,14 @@ def index():
     return render_template('index.html', articles=articles)
 
 
+@views.route(r'/ajax/markdown/', methods=["POST",])
+def ajax_markdown():
+    text = request.form.get('text')
+    if text is None:
+        return "bad request"
+    return pygments_markdown(text)
+
+
 @views.route(r'/a/<number>/')
 def get_aritle(number):
     """Render website's index page."""

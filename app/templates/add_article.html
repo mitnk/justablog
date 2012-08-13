@@ -3,12 +3,33 @@
 {% block title %}Add New Article{% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="/css/pygments.css" type="text/css" />
 <style>
 .errors { color:red; }
 h1{ font-size:20px; }
 #title, #tags { width:100%; height:1.5em; }
-textarea {height: 200px; width: 100%; }
+textarea {height: 200px; width: 100%;padding:2px; }
+.preview {border: 2px solid #999999; background-color:#DDDDDD; font-size:14px; padding:2px 8px 2px 8px; margin-left:20px;}
+#preview {border: 2px solid green;padding:2px 0 2px 8px;}
 </style>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+function preview() {
+    var obj = document.getElementById("preview");
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+            obj.innerHTML = xmlhttp.responseText;
+    }
+    xmlhttp.open("POST", "/ajax/markdown/", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    var content = document.getElementById("content").value;
+    xmlhttp.send("text=" + encodeURIComponent(content));
+}
+document.getElementById("content").setAttribute("onblur", "preview()");
+</script>
 {% endblock %}
 
 {% block main %}
@@ -21,6 +42,12 @@ textarea {height: 200px; width: 100%; }
       <p>{{ render_field(form.content) }}</p>
       <p>{{ render_field(form.tags, placeholder="多个tag请用空格分隔") }}</p>
       <p>{{ render_field(form.is_public) }}</p>
-      <p class="submit">{{ form.submit }}</p>
+      <p class="submit">{{ form.submit }} <a class="preview" onclick="preview()" href="javascript:void()">Preview</a></p>
   </form>
+
+  <div id="preview"><p>Article Preview</p></div>
+  <div>
+    <strong style="color:red;">Warning:</strong>
+    Above is preview only, be sure to push "Create Article" button to save it.
+  </div>
 {% endblock %}
