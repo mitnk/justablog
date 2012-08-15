@@ -6,7 +6,7 @@ application.
 """
 from flask import Module, url_for, render_template, request, redirect
 from models import Article
-from forms import ArticleForm
+from forms import ArticleForm, SettingsForm
 from utils import requires_auth, pygments_markdown, get_aritle_by_number, \
     link_tags
 
@@ -59,6 +59,16 @@ def tag_articles(tag):
     articles = [x for x in articles if x.is_public]
     articles = [x for x in articles if tag in x.tags.split(' ')]
     return render_template('index.html', articles=articles)
+
+
+@views.route('/settings/', methods=["POST", "GET"])
+@requires_auth
+def settings():
+    form = SettingsForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            pass
+    return render_template('settings.html', form=form)
 
 
 @views.route('/add/', methods=["POST", "GET"])
