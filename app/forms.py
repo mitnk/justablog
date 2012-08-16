@@ -11,10 +11,14 @@ from flaskext.wtf import BooleanField, Form, TextField, TextAreaField, \
 
 
 class ArticleForm(Form):
-    """Simple todo form."""
     title = TextField("Title", validators=[Required()])
     content = TextAreaField("Content", validators=[Required()])
     tags = TextField()
     is_public = BooleanField()
     submit = SubmitField("Create Article")
+
+
+class SettingsForm(Form):
+    blog_name = TextField("Blog Name", validators=[Required()])
+    submit = SubmitField("Save")
 
