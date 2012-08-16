@@ -57,3 +57,5 @@
 .highlight .vg { color: #00688B } /* Name.Variable.Global */
 .highlight .vi { color: #00688B } /* Name.Variable.Instance */
 .highlight .il { color: #B452CD } /* Literal.Number.Integer.Long */
+
+code {background-color:#EEEEEE; color:#222222; margin:0 2px; padding:2px 6px; font-size:14px; font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;}
