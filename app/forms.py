@@ -7,7 +7,7 @@ Forms for your application can be stored in this file.
 """
 
 from flaskext.wtf import BooleanField, Form, TextField, TextAreaField, \
-    SubmitField, Required
+    SubmitField, Required, HiddenField
 
 
 class ArticleForm(Form):
@@ -16,6 +16,14 @@ class ArticleForm(Form):
     tags = TextField()
     is_public = BooleanField()
     submit = SubmitField("Create Article")
+
+
+class CommentForm(Form):
+    article_number = HiddenField("Article Number")
+    author = TextField("Your Name", validators=[Required()])
+    checker = TextField("Input the number of this month", validators=[Required()])
+    comment = TextAreaField("Your Comment", validators=[Required()])
+    submit = SubmitField("Add a Comment")
 
 
 class SettingsForm(Form):

@@ -11,14 +11,36 @@
     <h1 class="entry-title">{{ article.title }}</h1>
 
     <div class="entry-content">
-    {{ content|safe }}
+    {{ article.content|pygments_markdown|safe }}
     </div>
 
-{% if article.tags %}
     <div class="entry-meta">
-    Tags: {{ tags|safe }}
+    {% if article.tags %}Tags: {{ article.tags|link_tags|safe }}{% endif %} Created: {{ article.added|format_date }}
     </div>
+</div>
+
+
+{% if form %}
+<div class="comment_container">
+  <h3>Comments on this article:</h3>
+  {% for comment in comments %}
+  <div class="comment">
+    <strong>{{ comment.author }}</strong> at {{ comment.added|format_date }}<br />
+    <div class="comment-content">
+    {{ comment.comment|pygments_markdown|safe }}
+    </div>
+  </div>
+  {% endfor %}
+
+  {% from "_comment_form_helpers.html" import render_field %}
+  <form id="main_form" action="." method="post">
+      <p>{{ form.hidden_tag() }}</p>
+      <p>{{ render_field(form.author, placeholder="Your Name") }}</p>
+      <p>{{ render_field(form.checker, placeholder="Input the Number of this Month") }}</p>
+      <p>{{ render_field(form.comment, placeholder="Comment Here") }}</p>
+      <p class="submit">{{ form.submit }}</p>
+  </form>
+</div>
 {% endif %}
 
-</div>
 {% endblock %}

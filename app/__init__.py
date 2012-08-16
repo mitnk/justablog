@@ -9,6 +9,7 @@ This file creates your application.
 
 from flask import Flask
 from views import views
+from utils import format_date, pygments_markdown, link_tags
 import settings
 
 def create_app():
@@ -20,4 +21,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(settings)
     app.register_module(views)
+    app.jinja_env.filters['format_date'] = format_date
+    app.jinja_env.filters['pygments_markdown'] = pygments_markdown
+    app.jinja_env.filters['link_tags'] = link_tags
     return app

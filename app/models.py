@@ -21,3 +21,11 @@ class Article(db.Model):
 
     def get_edit_url(self):
         return "/edit/%s/" % self.number
+
+
+class Comment(db.Model):
+    article_number = db.IntegerProperty(required=True)
+    author = db.StringProperty(required=True)
+    comment = db.TextProperty(required=True)
+    added = db.DateTimeProperty(auto_now_add=True)
+

@@ -4,11 +4,13 @@ Flask Module Docs:  http://flask.pocoo.org/docs/api/#flask.Module
 This file is used for both the routing and logic of your
 application.
 """
+import datetime
+
 from flask import Module, url_for, render_template, request, redirect
-from models import Article
-from forms import ArticleForm, SettingsForm
+from models import Article, Comment
+from forms import ArticleForm, SettingsForm, CommentForm
 from utils import requires_auth, pygments_markdown, get_aritle_by_number, \
-    link_tags
+    get_comments
 
 views = Module(__name__, 'views')
 
@@ -29,17 +31,37 @@ def ajax_markdown():
     return pygments_markdown(text)
 
 
-@views.route(r'/a/<number>/')
+@views.route(r'/a/<int:number>/', methods=["POST", "GET"])
 def get_aritle(number):
-    """Render website's index page."""
     article = get_aritle_by_number(number)
     if article is None or not article.is_public:
         return render_template('404.html'), 404
+
+    form = CommentForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            try:
+                month_number = int(form.checker.data)
+            except ValueError:
+                month_number = 0
+            if month_number != datetime.date.today().month:
+                form.checker.errors = ["Sorry, but please prove you are a human."]
+                form.checker.data = ""
+            else:
+                comment = Comment(
+                    article_number=number,
+                    author=form.author.data,
+                    comment=form.comment.data,
+                )
+                comment.save()
+                return redirect(article.get_absolute_url())
+
+    comments = get_comments(number)
     return render_template(
         'article.html',
         article=article,
-        content=pygments_markdown(article.content),
-        tags=link_tags(article.tags),
+        form=form,
+        comments=comments,
     )
 
 
@@ -50,7 +72,7 @@ def get_private_aritle(number):
     article = get_aritle_by_number(number)
     if article is None:
         return render_template('404.html'), 404
-    return render_template('article.html', article=article, content=pygments_markdown(article.content))
+    return render_template('article.html', article=article)
 
 
 @views.route(r'/tag/<tag>/')
@@ -148,5 +170,4 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
-
 

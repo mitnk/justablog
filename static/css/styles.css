@@ -2,10 +2,6 @@
 
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,q,small,strong,sub,sup,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0;margin:0;padding:0}article,aside,figure,figure img,figcaption,hgroup,footer,header,nav,section,video,object{display:block}a img{border:0}figure{position:relative}figure img{width:100%}
 
-/* ============================== */
-/* ! Layout for desktop version   */
-/* ============================== */
-
 body { color:#333333; }
 a {text-decoration:none; color:darkgreen;}
 h1 { padding-bottom:8px; margin-bottom:20px; font-size:32px; border-bottom:1px solid lightBlue; }
@@ -17,30 +13,14 @@ h2 { margin-bottom:9px; font-size:18px; }
 .entry-content h1 {border:none;}
 .entry-meta {font-size:14px; padding-top:10px; margin-top:20px; }
 
+.comment_container {margin-top:20px; padding-top:10px; border-top:1px solid lightBlue; }
+.comment_container h3 {font-size:16px;}
+.comment_container strong {color:#A02E2E;}
+.comment_container #author {width:40%; height:1.8em; padding-left:6px;}
+.comment_container #checker {width:40%; height:1.8em; padding-left:6px;}
+.comment_container #comment {width:90%; height:8em; font-size:14px; padding:6px;}
+.comment-content {border-bottom:1px solid #DFEFEF; margin-bottom:20px; font-size:16px; padding-left:1em;}
+
 .fr {float:right;}
-
-/* ============================= */
-/* ! Layout for mobile version   */
-/* ============================= */
-
-@media handheld, only screen and (max-width: 767px) {
-
-    body {
-
-    }
-
-}
-
-
-/* ========================================== */
-/* ! Provide higher res assets for iPhone 4   */
-/* ========================================== */
-
-@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
-
-/*    .logo {
-        background: url(logo2x.jpg) no-repeat;
-        background-size: 212px 303px;
-    }*/
-
-}
+.errors {color:red;}
+.errors li {margin-left:20px;}

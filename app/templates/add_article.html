@@ -28,7 +28,6 @@ function preview() {
     var content = document.getElementById("content").value;
     xmlhttp.send("text=" + encodeURIComponent(content));
 }
-document.getElementById("content").setAttribute("onblur", "preview()");
 
 function disable_btn() {
     var btn = document.getElementById("submit");
@@ -42,7 +41,7 @@ document.getElementById("submit").setAttribute("onclick", "setTimeout(disable_bt
 {% block main %}
   <h1>Add New Article</h1>
 
-{% from "_form_helpers.html" import render_field %}
+  {% from "_form_helpers.html" import render_field %}
   <form id="main_form" action="{{ action_url }}" method="post">
       <p>{{ form.hidden_tag() }}</p>
       <p>{{ render_field(form.title, placeholder="标题") }}</p>

@@ -4,7 +4,7 @@ import settings
 from flask import Response, request
 from functools import wraps
 from libs.BeautifulSoup import BeautifulSoup
-from models import Article
+from models import Article, Comment
 from pygments import lexers, formatters, highlight
 
 
@@ -62,11 +62,16 @@ def pygments_markdown(content):
 
 def get_aritle_by_number(number):
     articles = Article.all()
-    articles = articles.filter('number <=', int(number))
-    articles = articles.filter('number >=', int(number))
+    articles = articles.filter('number ==', int(number))
     if articles.count() == 0:
-    	return None
+        return None
     return articles[0]
+
+
+def get_comments(number):
+    comments = Comment.all()
+    comments = comments.filter('article_number ==', int(number))
+    return comments
 
 
 def link_tags(tags):
@@ -74,3 +79,8 @@ def link_tags(tags):
     for tag in tags.split(" "):
         result += '<a href="/tag/%s/">%s</a> ' % (tag, tag)
     return result
+
+
+def format_date(date):
+    return date.strftime("%Y-%m-%d %H:%M")
+
