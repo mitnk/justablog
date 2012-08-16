@@ -1,3 +1,4 @@
+from cgi import escape
 import markdown
 import settings
 
@@ -41,6 +42,9 @@ def pygments_markdown(content):
     html = markdown.markdown(content)
     # Using html.parser to prevent bs4 adding <html> tag
     soup = BeautifulSoup(html)
+    for tag in ("script", "html", "head", "title", "div", "hr", "article", "header", "footer"):
+        if soup.findAll(tag):
+            return escape(content)
     for pre in soup.findAll('pre'):
         if pre.code:
             txt = unicode(pre.code.text)
@@ -52,6 +56,10 @@ def pygments_markdown(content):
             if lexer_name not in _lexer_names:
                 lexer_name = "text"
             lexer = lexers.get_lexer_by_name(lexer_name, stripnl=True, encoding='UTF-8')
+            if txt.find("&lt;") != -1 and txt.find("&gt;") != -1:
+                txt = txt.replace("&lt;", "<").replace("&gt;", ">")
+            if txt.find("&amp;") != -1:
+                txt = txt.replace("&amp;", "&")
             highlighted = highlight(txt, lexer, _formatter)
             div_code = BeautifulSoup(highlighted).div
             if not div_code:

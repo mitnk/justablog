@@ -19,7 +19,7 @@ h2 { margin-bottom:9px; font-size:18px; }
 .comment_container #author {width:40%; height:1.8em; padding-left:6px;}
 .comment_container #checker {width:40%; height:1.8em; padding-left:6px;}
 .comment_container #comment {width:90%; height:8em; font-size:14px; padding:6px;}
-.comment-content {border-bottom:1px solid #DFEFEF; margin-bottom:20px; font-size:16px; padding-left:1em;}
+.comment-content {border-bottom:1px solid #EFF8FB; margin-bottom:20px; font-size:16px; padding:0.5em 1em 1em 1em;}
 
 .fr {float:right;}
 .errors {color:red;}
