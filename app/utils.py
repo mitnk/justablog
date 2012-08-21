@@ -1,4 +1,5 @@
 from cgi import escape
+from datetime import timedelta
 import markdown
 import settings
 
@@ -82,6 +83,11 @@ def get_comments(number):
     return comments
 
 
+def get_comment_count(number):
+    n = len([x for x in get_comments(number)])
+    return "" if n == 0 else "(%d)" % n
+
+
 def link_tags(tags):
     result = ""
     for tag in tags.split(" "):
@@ -90,5 +96,7 @@ def link_tags(tags):
 
 
 def format_date(date):
-    return date.strftime("%Y-%m-%d %H:%M")
+    # convert to Beijing timezone
+    date = date + timedelta(hours=8)
+    return date.strftime("%Y-%m-%d %H:%M UTC+8")
 
