@@ -57,7 +57,7 @@ def pygments_markdown(content):
             if lexer_name not in _lexer_names:
                 lexer_name = "text"
             lexer = lexers.get_lexer_by_name(lexer_name, stripnl=True, encoding='UTF-8')
-            if txt.find("&lt;") != -1 and txt.find("&gt;") != -1:
+            if txt.find("&lt;") != -1 or txt.find("&gt;") != -1:
                 txt = txt.replace("&lt;", "<").replace("&gt;", ">")
             if txt.find("&amp;") != -1:
                 txt = txt.replace("&amp;", "&")
